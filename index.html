@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Periodic Table</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Periodic Table of Elements</h1>
+        
+        <div class="filters">
+            <select id="propertyFilter">
+                <option value="all">All Elements</option>
+                <option value="metal">Metals</option>
+                <option value="nonmetal">Non-metals</option>
+                <option value="noble-gas">Noble Gases</option>
+                <option value="halogen">Halogens</option>
+                <option value="transition">Transition Metals</option>
+                <option value="lanthanide">Lanthanides</option>
+                <option value="actinide">Actinides</option>
+            </select>
+        </div>
+
+        <div class="periodic-table" id="periodicTable">
+            <!-- Main periodic table grid -->
+        </div>
+
+        <div class="special-series">
+            <div class="lanthanides" id="lanthanidesSeries">
+                <!-- Lanthanides will be added here -->
+            </div>
+            <div class="actinides" id="actinidesSeries">
+                <!-- Actinides will be added here -->
+            </div>
+        </div>
+
+        <div class="element-details" id="elementDetails">
+            <h2>Element Details</h2>
+            <div class="details-content">
+                <p>Hover over an element to see details</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
