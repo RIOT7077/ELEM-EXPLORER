@@ -1,3 +1,4 @@
+// Periodic table data
 const elements = [
     { number: 1, symbol: 'H', name: 'Hydrogen', category: 'nonmetal', mass: 1.008, period: 1, group: 1 },
     { number: 2, symbol: 'He', name: 'Helium', category: 'noble-gas', mass: 4.003, period: 1, group: 18 },
@@ -118,13 +119,18 @@ const elements = [
     { number: 117, symbol: 'Ts', name: 'Tennessine', category: 'halogen', mass: 294.000, period: 7, group: 17 },
     { number: 118, symbol: 'Og', name: 'Oganesson', category: 'noble-gas', mass: 294.000, period: 7, group: 18 }
 ];
+
+// Function to create the periodic table
 function createPeriodicTable() {
     const table = document.getElementById('periodicTable');
     const lanthanideSeries = document.getElementById('lanthanideSeries');
     const actinideSeries = document.getElementById('actinideSeries');
+    
+    // Create main periodic table grid
     for (let period = 1; period <= 7; period++) {
         for (let group = 1; group <= 18; group++) {
             const element = elements.find(e => {
+                // Skip lanthanides and actinides in main table
                 if ((e.number >= 57 && e.number <= 71) || (e.number >= 89 && e.number <= 103)) {
                     return false;
                 }
@@ -140,8 +146,9 @@ function createPeriodicTable() {
                     <div class="symbol">${element.symbol}</div>
                     <div class="name">${element.name}</div>
                 `;
-                cell.addEventListener('click', () => showElementDetails(element));
+                cell.addEventListener('mouseenter', () => showElementDetails(element));
             } else {
+                // Add placeholder for lanthanides and actinides
                 if ((period === 6 && group === 3)) {
                     cell.className = 'element lanthanide-placeholder';
                     cell.innerHTML = 'La-Lu';
@@ -157,6 +164,7 @@ function createPeriodicTable() {
         }
     }
 
+    // Create lanthanide series
     elements
         .filter(e => e.number >= 57 && e.number <= 71)
         .forEach(element => {
@@ -167,10 +175,11 @@ function createPeriodicTable() {
                 <div class="symbol">${element.symbol}</div>
                 <div class="name">${element.name}</div>
             `;
-            cell.addEventListener('click', () => showElementDetails(element));
+            cell.addEventListener('mouseenter', () => showElementDetails(element));
             lanthanideSeries.appendChild(cell);
         });
 
+    // Create actinide series
     elements
         .filter(e => e.number >= 89 && e.number <= 103)
         .forEach(element => {
@@ -181,21 +190,24 @@ function createPeriodicTable() {
                 <div class="symbol">${element.symbol}</div>
                 <div class="name">${element.name}</div>
             `;
-            cell.addEventListener('click', () => showElementDetails(element));
+            cell.addEventListener('mouseenter', () => showElementDetails(element));
             actinideSeries.appendChild(cell);
         });
 
+    // Initialize filters after creating elements
     initializeFilters();
 }
 
+// Add filter functionality
 function initializeFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const elements = document.querySelectorAll('.element:not(.empty):not(.lanthanide-placeholder):not(.actinide-placeholder)');
 
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
-     
+            // Remove active class from all buttons
             filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
             button.classList.add('active');
 
             const category = button.getAttribute('data-category');
@@ -218,6 +230,7 @@ function initializeFilters() {
     });
 }
 
+// Function to show element details
 function showElementDetails(element) {
     document.getElementById('elementName').textContent = element.name;
     document.getElementById('elementSymbol').textContent = element.symbol;
@@ -228,6 +241,7 @@ function showElementDetails(element) {
     document.getElementById('elementGroup').textContent = element.group;
 }
 
+// Initialize smooth scrolling
 function initializeSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -235,7 +249,7 @@ function initializeSmoothScroll() {
             const target = document.querySelector(this.getAttribute('href'));
             
             if (target) {
-                const headerOffset = 80;
+                const headerOffset = 80; // Adjust this value based on your header height
                 const elementPosition = target.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -247,3 +261,106 @@ function initializeSmoothScroll() {
         });
     });
 }
+
+// Initialize FAQ functionality
+function initializeFAQ() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', () => {
+            // Close other open items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('active')) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            
+            // Toggle current item
+            item.classList.toggle('active');
+        });
+    });
+}
+
+// Handle support form submission
+function initializeSupportForm() {
+    const supportForm = document.querySelector('.support-form');
+    
+    if (supportForm) {
+        supportForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('supportName').value,
+                email: document.getElementById('supportEmail').value,
+                topic: document.getElementById('supportTopic').value,
+                message: document.getElementById('supportMessage').value
+            };
+            
+            // Here you would typically send the form data to your backend
+            console.log('Support form submitted:', formData);
+            
+            // Show success message
+            alert('Thank you for your message! We will get back to you soon.');
+            
+            // Reset form
+            supportForm.reset();
+        });
+    }
+}
+
+// Update the document ready function to include new initializations
+document.addEventListener('DOMContentLoaded', () => {
+    createPeriodicTable();
+    
+    // Show first element by default
+    const firstElement = elements[0];
+    showElementDetails(firstElement);
+    
+    // Initialize scroll animations
+    initializeScrollAnimations();
+    
+    // Initialize smooth scroll
+    initializeSmoothScroll();
+    
+    // Initialize FAQ functionality
+    initializeFAQ();
+    
+    // Initialize support form
+    initializeSupportForm();
+});
+
+// Initialize scroll animations
+function initializeScrollAnimations() {
+    const scrollElements = document.querySelectorAll('.scroll-hidden');
+    
+    const elementInView = (el, offset = 0) => {
+        const elementTop = el.getBoundingClientRect().top;
+        return (
+            elementTop <= 
+            (window.innerHeight || document.documentElement.clientHeight) - offset
+        );
+    };
+    
+    const displayScrollElement = (element) => {
+        element.classList.add('scroll-show');
+    };
+    
+    const handleScrollAnimation = () => {
+        scrollElements.forEach((el) => {
+            if (elementInView(el, 100)) {
+                displayScrollElement(el);
+            }
+        });
+    };
+    
+    // Add animation on scroll
+    window.addEventListener('scroll', () => {
+        handleScrollAnimation();
+    });
+    
+    // Check for elements in view on initial load
+    handleScrollAnimation();
+} 
